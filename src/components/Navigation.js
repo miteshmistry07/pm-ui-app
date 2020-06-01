@@ -1,13 +1,16 @@
 import React from 'react';
 import logo from '../icon.ico';
+import {Link} from 'react-router-dom';
 
 function Navigation() {
     
     return(
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <img src={logo} alt="logo"/>
-            <a className="navbar-brand" href="#" style={{ marginLeft: '20px'}} >Property Management</a>
-            <button 
+            <Link to='/'  className="navbar-brand">
+                <img src={logo} alt="logo"/>&nbsp;
+                <span >Property Management</span>
+            </Link>
+             <button 
                 className="navbar-toggler" 
                 type="button" 
                 data-toggle="collapse" 
@@ -31,7 +34,9 @@ function Navigation() {
                         >Add
                         </a>
                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a className="dropdown-item" >Premise</a>
+                            <Link to='/addPremise'>
+                                <li className="dropdown-item">Premise</li>
+                            </Link>
                         </div>
                     </li>
                     <li className="nav-item dropdown">
