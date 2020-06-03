@@ -1,27 +1,22 @@
 import React from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
+import PremiseForm from './components/PremiseForm';
+import Home from './components/Home';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
   return (
-  
-    <div className="App">
-      <Navigation/>
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload. This is HOME PAGE
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Navigation/>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/addPremise" component={PremiseForm} />
+        </Switch>
+      </Router>
     </div>
   );
 }
-
+// decent vid for routing https://www.youtube.com/watch?v=Law7wfdg_ls 
 export default App;

@@ -35,7 +35,9 @@ function Navigation() {
                         </a>
                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                             <Link to='/addPremise'>
-                                <li className="dropdown-item">Premise</li>
+                                <span className="dropdown-item">
+                                    Premise
+                                </span>
                             </Link>
                         </div>
                     </li>
