@@ -5,11 +5,10 @@ class PremiseForm extends React.Component {
     constructor(){
         super();
         this.state = {
-            premiseId: "",
-            premiseNumber: "",
-            address: "",
-            city: "",
-            postCode: ""
+            "premiseNumber": "",
+            "address": "",
+            "city": "",
+            "postCode": ""
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,36 +21,116 @@ class PremiseForm extends React.Component {
         type === "checkbox" ? this.setState({[name]: checked}): this.setState( {[name]: value} );
     }
 
+    validateForm() {
+        let isValid = true;
+        let fieldNames = Object.keys(this.state);
+        //alert(Object.keys(this.state).length);
+
+        for(let i=0; i<fieldNames.length; i++) {
+            //alert(this.state[fieldNames[i]]);
+            if (this.state[fieldNames[i]] === "") {
+                console.log("blank " + fieldNames[i]);
+                isValid = false;
+                //set error message display
+                break;
+            }       
+        }
+       
+        return isValid;
+    } //validateForm
+
+    checkStatus(response) {    
+        
+        if (!response.ok) {
+            //false
+            if (!response.status === 401 || !response.status === 400) {
+                throw new Error(response.status + " " + response.statusText);
+            }
+        }
+
+        return  Promise.resolve(response);
+ /*       
+        if (response.status === 401) {
+            console.error(response);
+            alert("Login " + response.message);
+        }
+        else if (response.status === 400) {
+            //need to loop around form errors
+            console.error(response);
+            let validationErrors = "";
+
+            for(let i=0; i < response.errors.length; i++) {
+                    validationErrors += " " + response.errors[i]  + ".";
+            }
+            alert("form errors " + validationErrors);    
+        }
+        else if (response.status >= 200 && response.status <= 300) {
+            return Promise.resolve(response)
+        }
+        else {
+            return Promise.reject(new Error(response.status + " " + response.statusText));
+        }
+    */
+    }
+
+    json(response) {
+        return response.json()
+    }
+
     handleSubmit(event) {
         //console.log('Value of state is: ' + this.state.premiseNumber);
         event.preventDefault();
-        //do POST to external service
-        let url = '/api/premise/add';
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaXQiLCJleHAiOjE1OTExODE4MzgsImlhdCI6MTU5MTE3NDYzOH0.7lcBNSADt17ewxPP93kGp7OR9iUiRHIg4jh0riEb6BlWzZy1u1Rmyd6aDwH86TtfnWbWN8Egz5j0_OKJ195YNg',
-            },
-            body: JSON.stringify(this.state)
-        }
+        let isValid = true;//this.validateForm();
+        
+        if (isValid) {
+            //do POST to external service
+            let url = '/api/premise/add';
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer     "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbSIsImV4cCI6MTU5MTk1Nzg2NSwiaWF0IjoxNTkxOTUwNjY1fQ.2edT6L8LI6oMoc6n9wQq3EryGL5nPWNYxAxYzTqNt6-u9IVpaD9jDMdkJadaGFF7GrhWYBMxZIGwBv8n4SfUgw"',
+                },
+                body: JSON.stringify(this.state)
+            }
 
-        fetch(url,requestOptions)
-        .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-        //alert(JSON.stringify(requestOptions.body));
+            fetch(url, requestOptions)
+                .then(this.checkStatus)
+                .then(response => response.json())
+                .then((data) => {                         
+                    if (data.status === 401) {
+                        console.error(data);
+                        alert("Login " + data.message);
+                    }
+                    else if (data.status === 400) {
+                        //need to loop around form errors
+                        console.error(data);
+                        let validationErrors = "";
+            
+                        for(let i=0; i < data.errors.length; i++) {
+                                validationErrors += " " + data.errors[i]  + ".";
+                        }
+                        alert("form errors " + validationErrors);    
+                    }
+                    else {
+                        console.log('Success');
+                        alert("Premise saved " + data.premiseId );
+                        console.log(data);
+                    }
+                })
+                .catch((error)=> {
+                    console.log("Error");
+                    console.log(error);
+                    alert("An error has occured. " + error.message);
+                });
+        } //if
     }
 
     render() {
         
         return(
             <main>
-                <form onSubmit={this.handleSubmit}>
+                <form  onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="premiseNumber">Premise Number</label>
                         <input 
@@ -60,6 +139,7 @@ class PremiseForm extends React.Component {
                             name="premiseNumber"
                             placeholder="House Number" 
                             onChange={this.handleOnChange}
+                            required
                         />
                     </div>
                     <div className="form-group">
@@ -70,6 +150,7 @@ class PremiseForm extends React.Component {
                             value={this.state.address} 
                             placeholder="Address" 
                             onChange={this.handleOnChange}
+                            
                         />
                     </div>
                     <div className="form-group">
@@ -90,6 +171,7 @@ class PremiseForm extends React.Component {
                             name="postCode" 
                             placeholder="Post Code" 
                             onChange={this.handleOnChange}
+                            required
                         />
                     </div>
                     <button type="submit" className="btn btn-default">Submit</button>
