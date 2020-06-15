@@ -39,38 +39,14 @@ class PremiseForm extends React.Component {
         return isValid;
     } //validateForm
 
-    checkStatus(response) {    
-        
+    checkStatus(response) {        
         if (!response.ok) {
             //false
-            if (!response.status === 401 || !response.status === 400) {
-                throw new Error(response.status + " " + response.statusText);
+            if (response.status !== 401 && response.status !== 400) {
+                    throw new Error(response.status + " " + response.statusText);  
             }
         }
-
         return  Promise.resolve(response);
- /*       
-        if (response.status === 401) {
-            console.error(response);
-            alert("Login " + response.message);
-        }
-        else if (response.status === 400) {
-            //need to loop around form errors
-            console.error(response);
-            let validationErrors = "";
-
-            for(let i=0; i < response.errors.length; i++) {
-                    validationErrors += " " + response.errors[i]  + ".";
-            }
-            alert("form errors " + validationErrors);    
-        }
-        else if (response.status >= 200 && response.status <= 300) {
-            return Promise.resolve(response)
-        }
-        else {
-            return Promise.reject(new Error(response.status + " " + response.statusText));
-        }
-    */
     }
 
     json(response) {
@@ -89,7 +65,7 @@ class PremiseForm extends React.Component {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer     "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbSIsImV4cCI6MTU5MTk1Nzg2NSwiaWF0IjoxNTkxOTUwNjY1fQ.2edT6L8LI6oMoc6n9wQq3EryGL5nPWNYxAxYzTqNt6-u9IVpaD9jDMdkJadaGFF7GrhWYBMxZIGwBv8n4SfUgw"',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbSIsImV4cCI6MTU5MjI0MDYzNCwiaWF0IjoxNTkyMjMzNDM0fQ.qCuQ8xFW7opmdHp7-iq033sFo-Ttum_YzJRm4V7d-JhqhOVXSYeXXdEq0mjdIFhGNd2VFmQP3HHIpElsIeuZow'
                 },
                 body: JSON.stringify(this.state)
             }
