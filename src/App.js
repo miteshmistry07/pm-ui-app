@@ -8,14 +8,16 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
   return (
-    <div>
+    <div>  
       <Router>
-        <Navigation/>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/addPremise" component={PremiseForm} />
-          <Route path="/login" component={LoginForm} />
-        </Switch>
+        <Navigation/> 
+        <div className="container-fluid ">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/addPremise" component={PremiseForm} />
+            <Route path="/login" component={LoginForm} />
+          </Switch>
+        </div>
       </Router>
     </div>
   );

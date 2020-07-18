@@ -1,5 +1,7 @@
 import React from 'react';
-import jws from 'jsonwebtoken'
+import logo from '../icon.ico';
+import { authenticationService } from '../service/AuthenticationService';
+//import LoginStatus from './LoginStatus';
 
 class LoginForm extends React.Component {
 
@@ -19,7 +21,7 @@ class LoginForm extends React.Component {
         const {name, value, type, checked } = event.target;        
         type === "checkbox" ? this.setState({[name]: checked}): this.setState( {[name]: value} );
     }
-
+/*
     checkStatus(response) {        
         if (!response.ok) {
             //false
@@ -33,11 +35,12 @@ class LoginForm extends React.Component {
     json(response) {
         return response.json()
     }
-
+*/
     handleSubmit(event) {
         
         event.preventDefault(); //stop refresh
-        
+        authenticationService.login(this.state);
+        /*
         let url = '/api/login';
         const requestOptions = {
             method: 'POST',
@@ -79,8 +82,11 @@ class LoginForm extends React.Component {
                     localStorage.setItem("username", payload.sub);
                     localStorage.setItem("iat", payload.iat);
                     localStorage.setItem("exp", payload.exp);
+                    localStorage.setItem("isLoggedIn", true);
                     console.log(new Date(payload.iat * 1000));
                     console.log(new Date(payload.exp * 1000));
+                    authenticationService.login(payload.sub);
+                    //new LoginStatus(true);                  
                 }
             })
             .catch((error)=> {
@@ -88,37 +94,37 @@ class LoginForm extends React.Component {
                 console.log(error);
                 alert("An error has occured. " + error.message);
             });
-
+            */
     }
 
     render(){
         return(
             <main>
+                <img src={logo} alt="logo" width="72" height="72"/>
+                <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label>Username</label>
-                        <input 
-                            type="text" 
-                            className="form-control"
-                            name="username"
-                            placeholder="Username" 
-                            onChange={this.handleOnChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input 
-                            type="password" 
-                            className="form-control"
-                            name="password"
-                            placeholder="Password" 
-                            onChange={this.handleOnChange}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-default">Login</button>
+                    <label htmlFor="username" className="sr-only">Username</label>
+                    <input 
+                        type="text" 
+                        className="form-control"
+                        name="username"
+                        placeholder="Username" 
+                        onChange={this.handleOnChange}
+                        required
+                        autoFocus
+                    />
+                    <label htmlFor="password" className="sr-only">Password</label>
+                    <input 
+                        type="password" 
+                        className="form-control"
+                        name="password"
+                        placeholder="Password" 
+                        onChange={this.handleOnChange}
+                        required
+                    />
+                    <button type="submit" className="btn btn-lg btn-primary btn-block">Login</button>
                 </form>
+                
             </main>
         ); //return
     } //render

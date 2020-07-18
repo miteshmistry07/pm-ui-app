@@ -1,16 +1,22 @@
 import React from 'react';
 import logo from '../icon.ico';
 import {Link} from 'react-router-dom';
+import LoginStatus from './LoginStatus'
+/*
 
+*/
 function Navigation() {
-    
+    //navbar-nav 
     return(
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <Link to='/'  className="navbar-brand">
-                <img src={logo} alt="logo"/>&nbsp;
-                <span >Property Management</span>
-            </Link>
-             <button 
+            <div>
+                <Link to='/' className="navbar-brand">
+                    <img src={logo} alt="logo"/>&nbsp;
+                    <span className="navbar-brand">Property Management</span>     
+                </Link>
+            </div>
+           
+            <button 
                 className="navbar-toggler" 
                 type="button" 
                 data-toggle="collapse" 
@@ -21,9 +27,9 @@ function Navigation() {
                 >
                 <span className="navbar-toggler-icon"></span>
             </button>
-
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
+           
+            <div className="collapse navbar-collapse" id="navbarSupportedContent"> 
+                <ul className="navbar-nav">
                     <li className="nav-item dropdown">
                         <a  className="nav-link dropdown-toggle"  
                             id="navbarDropdown" 
@@ -55,6 +61,9 @@ function Navigation() {
                         </div>
                     </li>
                 </ul>
+            </div>
+            <div>
+                <LoginStatus/>
             </div>
         </nav>
     );
