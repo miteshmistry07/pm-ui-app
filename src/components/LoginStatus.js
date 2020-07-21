@@ -24,7 +24,6 @@ class LoginStatus extends React.Component {
                 });
             }
         });
-        
     } 
 
     render() {

@@ -8,7 +8,8 @@ import jws from 'jsonwebtoken'; //decode token
 
 
 */
-const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
+const currentUserSubject = new BehaviorSubject(localStorage.getItem("currentUser"));
+
 
 export const authenticationService = {
     login,
@@ -59,6 +60,7 @@ function login(state) {
                     currentUserSubject.next(payload.sub);
                     //console.log(payload.sub);
                     console.log(payload);
+                    localStorage.setItem("currentUser", payload.sub); //added for observable
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("username", payload.sub);
                     localStorage.setItem("iat", payload.iat);
