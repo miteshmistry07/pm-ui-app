@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import login from '../login.png';
-import {authenticationService } from '../service/AuthenticationService';
+import login from '../../assets/login.png';
+import {authenticationService } from '../../service/AuthenticationService';
 
 class LoginStatus extends React.Component {
 

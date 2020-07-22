@@ -3,7 +3,7 @@ import './App.css';
 import Navigation from './components/Navigation';
 import PremiseForm from './components/premise/PremiseForm';
 import ListAllPremises from './components/premise/ListAllPremises';
-import LoginForm from './components/LoginForm';
+import LoginForm from './components/Login/LoginForm';
 import Home from './components/Home';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 

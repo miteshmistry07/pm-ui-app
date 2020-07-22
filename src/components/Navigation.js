@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from '../icon.ico';
+import logo from '../assets/icon.ico';
 import {Link} from 'react-router-dom';
-import LoginStatus from './LoginStatus'
+import LoginStatus from '../components/Login/LoginStatus'
 /*
 
 */

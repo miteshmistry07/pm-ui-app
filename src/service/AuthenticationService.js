@@ -10,7 +10,6 @@ import jws from 'jsonwebtoken'; //decode token
 */
 const currentUserSubject = new BehaviorSubject(localStorage.getItem("currentUser"));
 
-
 export const authenticationService = {
     login,
     logout,

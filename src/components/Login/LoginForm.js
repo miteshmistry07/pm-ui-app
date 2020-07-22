@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '../icon.ico';
-import { authenticationService } from '../service/AuthenticationService';
+import logo from '../../assets/icon.ico';
+import { authenticationService } from '../../service/AuthenticationService';
 //import LoginStatus from './LoginStatus';
 
 class LoginForm extends React.Component {
