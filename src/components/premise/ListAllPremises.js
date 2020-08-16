@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import * as helper from '../../helper/helper.js';
+
 import Premise from './Premise';
+import * as helper from '../../helper/helper';
+import { authenticationService } from '../../service/AuthenticationService';
 
 function ListAllPremises() {
 
@@ -13,13 +15,13 @@ function ListAllPremises() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + authenticationService.getToken()
             }
         }
         
         fetch(apiPath, requestOptions)
-            .then(helper.helper.checkStatus)
-            .then(helper.helper.json)
+            .then(helper.utility.checkStatus)
+            .then(helper.utility.json)
             .then((data) => {   
                 //check json                      
                 if (data.status === 401) {

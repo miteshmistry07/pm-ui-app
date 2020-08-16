@@ -3,16 +3,18 @@ import './App.css';
 import Navigation from './components/Navigation';
 import PremiseForm from './components/premise/PremiseForm';
 import ListAllPremises from './components/premise/ListAllPremises';
-import LoginForm from './components/Login/LoginForm';
+import LoginForm from './components/login/LoginForm';
 import Home from './components/Home';
+import Brand from './components/Brand';
+
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
   return (
-    <div>  
       <Router>
+        <div className="container">
+        <Brand/>
         <Navigation/> 
-        <div className="container-fluid ">
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/addPremise" component={PremiseForm} />
@@ -21,7 +23,7 @@ function App() {
           </Switch>
         </div>
       </Router>
-    </div>
+    
   );
 }
 // decent vid for routing https://www.youtube.com/watch?v=Law7wfdg_ls 

@@ -1,0 +1,51 @@
+/* global styles  */
+.brandHeader {
+    vertical-align: center;
+    text-align: center;
+    background-color: black;
+    /*background-color: #F5F5F5; 
+    /* used in Brand.js */
+}
+
+.brandLogo {
+    margin-right:5px; 
+}
+
+.brandRow {
+    height: 70px;
+}
+
+.brandColumn {
+    display: flex;
+    justify-content: center;
+    width:75%;
+    align-items: center; /* vertical align */
+    background-color: #E5E5E5;
+}
+
+.loginStatusColumn {
+    display: flex;
+    width: 25%;
+    align-items: center; /* vertical align */
+    text-align: left;
+    background-color: #E5E5E5;
+    justify-content: left;
+}
+
+.col {
+    padding: 0px;
+}
+.inlineText {
+    display: inline;
+    vertical-align: middle;
+}
+
+a:hover {
+    text-decoration-line: none; 
+}
+
+.divBorder {
+    /* use to show div columns */
+    border-style: solid;
+    border-color: white;
+}
