@@ -42,28 +42,32 @@ function ListAllPremises() {
     }, []); //pass in blank array to stop constant looping
 
     return(
-        <table className="table">
-            <thead className="thead-light">
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">House Number</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">City/Town</th>
-                    <th scope="col">Post Code</th>
-                </tr>
-            </thead>
-            <tbody>
-            {/*
-                main content
-            */}
-            {   
-                premiseComponents.map((x) => {
-                    return <Premise item={x} key={x.premiseId}/>            
-                })
-                //premiseComponents[0].premiseId
-            }
-            </tbody>
-        </table>
+        <div className="row">
+            <div className="col">
+                <table className="table">
+                    <thead className="thead-light">
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">House Number</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">City/Town</th>
+                            <th scope="col">Post Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {/*
+                        main content
+                    */}
+                    {   
+                        premiseComponents.map((x) => {
+                            return <Premise item={x} key={x.premiseId}/>            
+                        })
+                        //premiseComponents[0].premiseId
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 }
 

@@ -11,18 +11,18 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
   return (
-      <Router>
-        <div className="container">
-        <Brand/>
-        <Navigation/> 
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/addPremise" component={PremiseForm} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/viewAllPremises" component={ListAllPremises} />
-          </Switch>
-        </div>
-      </Router>
+      <div className="container">
+        <Router>
+          <Brand/>
+          <Navigation/> 
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/addPremise" component={PremiseForm} />
+              <Route path="/login" component={LoginForm} />
+              <Route path="/viewAllPremises" component={ListAllPremises} />
+            </Switch>
+        </Router>
+      </div>
     
   );
 }
