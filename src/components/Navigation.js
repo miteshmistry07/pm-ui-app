@@ -48,7 +48,7 @@ function Navigation() {
                                 >View
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <Link to="/viewAllPremises">
+                                    <Link to="/listPremises">
                                         <span className="dropdown-item" >
                                             All Premises
                                         </span>

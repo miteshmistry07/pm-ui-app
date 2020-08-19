@@ -15,12 +15,13 @@ function App() {
         <Router>
           <Brand/>
           <Navigation/> 
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/addPremise" component={PremiseForm} />
-              <Route path="/login" component={LoginForm} />
-              <Route path="/viewAllPremises" component={ListAllPremises} />
-            </Switch>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/addPremise" component={PremiseForm} />
+            <Route path="/listPremises" component={ListAllPremises} />
+            <Route path="/viewPremise/:id" component={PremiseForm} />
+            <Route path="/login" component={LoginForm} />
+          </Switch>
         </Router>
       </div>
     

@@ -1,10 +1,13 @@
 import React from 'react';
+import { authenticationService } from '../../service/AuthenticationService';
+import * as helper from '../../helper/helper';
 
 class PremiseForm extends React.Component {
 
     constructor(){
         super();
         this.state = {
+            "premiseId": "",
             "premiseNumber": "",
             "address": "",
             "city": "",
@@ -12,6 +15,42 @@ class PremiseForm extends React.Component {
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        
+        if (this.props.match.params.id) {
+            //need to do api call to load existing record
+
+            let apiURL = "/api/premise/";
+            let premiseId = this.props.match.params.id;
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + authenticationService.getToken()
+                }
+            }
+
+            fetch(apiURL+premiseId, requestOptions)
+                .then(helper.utility.checkStatus)
+                .then(helper.utility.json)
+                .then((data) => {
+                   // console.log(data);
+                    
+                    //this.setState({premiseNumber: data.premiseNumber}, () => console.log(this.state));
+                   /*  
+                    for (const [key, value] of Object.entries(data)) {
+                       // console.log(`${key}: ${value}`);
+                        this.setState({[key]: value});
+                    } */
+                    console.log(this.state);
+                    this.setState(data);
+                    console.log(this.state);
+                    
+                });
+        }
+       
     }
 
     handleOnChange(event) {
@@ -39,20 +78,6 @@ class PremiseForm extends React.Component {
         return isValid;
     } //validateForm
 
-    checkStatus(response) {        
-        if (!response.ok) {
-            //false
-            if (response.status !== 401 && response.status !== 400) {
-                    throw new Error(response.status + " " + response.statusText);  
-            }
-        }
-        return  Promise.resolve(response);
-    }
-
-    json(response) {
-        return response.json()
-    }
-
     handleSubmit(event) {
         //console.log('Value of state is: ' + this.state.premiseNumber);
         event.preventDefault();
@@ -65,14 +90,14 @@ class PremiseForm extends React.Component {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbSIsImV4cCI6MTU5MjI0MDYzNCwiaWF0IjoxNTkyMjMzNDM0fQ.qCuQ8xFW7opmdHp7-iq033sFo-Ttum_YzJRm4V7d-JhqhOVXSYeXXdEq0mjdIFhGNd2VFmQP3HHIpElsIeuZow'
+                    'Authorization': 'Bearer ' + authenticationService.getToken()
                 },
                 body: JSON.stringify(this.state)
             }
 
             fetch(url, requestOptions)
-                .then(this.checkStatus)
-                .then(response => response.json())
+                .then(helper.utility.checkStatus)
+                .then(helper.utility.json)
                 .then((data) => {                         
                     if (data.status === 401) {
                         console.error(data);
@@ -89,9 +114,11 @@ class PremiseForm extends React.Component {
                         alert("form errors " + validationErrors);    
                     }
                     else {
-                        console.log('Success');
+                        //console.log('Success');
+                        //console.log(data);
                         alert("Premise saved " + data.premiseId );
-                        console.log(data);
+                        this.setState({premiseId: data.premiseId});
+                        
                     }
                 })
                 .catch((error)=> {
@@ -106,7 +133,19 @@ class PremiseForm extends React.Component {
         
         return(
             <main>
-                <form  onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit}>
+
+                    <div className='form-group'>
+                        <label htmlFor="premiseId">ID</label>
+                        <input 
+                            type="text" 
+                            className="form-control"
+                            name="premiseId" 
+                            defaultValue = {this.state.premiseId}
+                            disabled
+                        />
+                    </div>
+                         
                     <div className="form-group">
                         <label htmlFor="premiseNumber">Premise Number</label>
                         <input 
@@ -116,6 +155,7 @@ class PremiseForm extends React.Component {
                             placeholder="House Number" 
                             onChange={this.handleOnChange}
                             required
+                            defaultValue = {this.state.premiseNumber}
                         />
                     </div>
                     <div className="form-group">
@@ -125,8 +165,7 @@ class PremiseForm extends React.Component {
                             name="address" 
                             value={this.state.address} 
                             placeholder="Address" 
-                            onChange={this.handleOnChange}
-                            
+                            onChange={this.handleOnChange}                          
                         />
                     </div>
                     <div className="form-group">
@@ -137,6 +176,7 @@ class PremiseForm extends React.Component {
                             name="city" 
                             placeholder="City" 
                             onChange={this.handleOnChange}
+                            defaultValue = {this.state.city} 
                         />
                     </div>
                     <div className="form-group">
@@ -148,6 +188,7 @@ class PremiseForm extends React.Component {
                             placeholder="Post Code" 
                             onChange={this.handleOnChange}
                             required
+                            defaultValue = {this.state.postCode} 
                         />
                     </div>
                     <button type="submit" className="btn btn-default">Submit</button>
