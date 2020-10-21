@@ -19,8 +19,8 @@ function App() {
             <Route path="/" exact component={Home} />
             <Route path="/addPremise" component={PremiseForm} />
             <Route path="/listPremises" component={ListAllPremises} />
-            <Route path="/viewPremise/:id" component={PremiseForm} />
-            <Route path="/login" component={LoginForm} />
+            <Route path="/viewPremise/:premiseId" component={PremiseForm} />
+            <Route path="/login"  component={LoginForm} />
           </Switch>
         </Router>
       </div>

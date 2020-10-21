@@ -1,13 +1,12 @@
 import React from 'react';
 import { authenticationService } from '../../service/AuthenticationService';
 import * as helper from '../../helper/helper';
-
+//sort out error checking on saving premise when it doesnt exist and on the GET api
 class PremiseForm extends React.Component {
 
     constructor(){
         super();
         this.state = {
-            "premiseId": "",
             "premiseNumber": "",
             "address": "",
             "city": "",
@@ -15,50 +14,46 @@ class PremiseForm extends React.Component {
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.saveEdit = this.saveEdit.bind(this);
+        this.isNewPremise = 1; // control variable to show/hide new/edit premise
+        this.hasPremise = 0; // added incase on URL manipulation
     }
 
     componentDidMount() {
-        
-        if (this.props.match.params.id) {
-            //need to do api call to load existing record
 
+        this.isNewPremise = this.props.match.params.premiseId ? 0 : 1;
+
+        if (!this.isNewPremise) {
+            //need to do api call to load existing record
             let apiURL = "/api/premise/";
-            let premiseId = this.props.match.params.id;
+            let premiseId = this.props.match.params.premiseId; //params
+            //send this in request
             const requestOptions = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + authenticationService.getToken()
                 }
+
             }
 
-            fetch(apiURL+premiseId, requestOptions)
+            fetch(apiURL + premiseId, requestOptions)
                 .then(helper.utility.checkStatus)
                 .then(helper.utility.json)
                 .then((data) => {
-                   // console.log(data);
-                    
-                    //this.setState({premiseNumber: data.premiseNumber}, () => console.log(this.state));
-                   /*  
-                    for (const [key, value] of Object.entries(data)) {
-                       // console.log(`${key}: ${value}`);
-                        this.setState({[key]: value});
-                    } */
-                    console.log(this.state);
+                    //set the state with the new details
                     this.setState(data);
-                    console.log(this.state);
-                    
-                });
-        }
-       
-    }
+                    //console.log(this.state);
+                });//fetch
+        }//if
+    } //componentDidMount
 
     handleOnChange(event) {
         //console.log(event.target.name);
         //console.log(event.target.checked);
         const {name, value, type, checked } = event.target;        
         type === "checkbox" ? this.setState({[name]: checked}): this.setState( {[name]: value} );
-    }
+    }//handleOnChange
 
     validateForm() {
         let isValid = true;
@@ -85,17 +80,20 @@ class PremiseForm extends React.Component {
         
         if (isValid) {
             //do POST to external service
-            let url = '/api/premise/add';
+            let apiURL = '/api/premise/add';
+            let requestMethod = 'POST';
+                        
             const requestOptions = {
-                method: 'POST',
+                method: requestMethod,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + authenticationService.getToken()
                 },
                 body: JSON.stringify(this.state)
             }
-
-            fetch(url, requestOptions)
+            console.log(JSON.stringify(this.state));
+            
+            fetch(apiURL, requestOptions)
                 .then(helper.utility.checkStatus)
                 .then(helper.utility.json)
                 .then((data) => {                         
@@ -129,12 +127,63 @@ class PremiseForm extends React.Component {
         } //if
     }
 
+    saveEdit() {
+
+        let apiURL = '/api/premise/update';
+        let requestMethod = 'PUT';
+        const requestOptions = {
+            method: requestMethod,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + authenticationService.getToken()
+            },
+            body: JSON.stringify(this.state)
+        }
+        
+        fetch(apiURL, requestOptions)
+            .then(helper.utility.checkStatus)
+            //.then(helper.utility.json)
+            .then((data) => {                         
+                if (data.status === 401) {
+                    console.error(data);
+                    alert("Login " + data.message);
+                }
+                else if (data.status === 400) {
+                    //need to loop around form errors
+                    console.error(data);
+                    let validationErrors = "";
+        
+                    for(let i=0; i < data.errors.length; i++) {
+                            validationErrors += " " + data.errors[i]  + ".";
+                    }
+                    alert("form errors " + validationErrors);    
+                }
+                else {
+                    //console.log('Success');
+                    //console.log(data);
+                    alert("Changes have been saved.");
+                }
+            })
+            .catch((error)=> {
+                console.log("Error");
+                console.log(error);
+                alert("An error has occured. " + error.message);
+            });
+    }
+
+    displaySubmitButton() {
+        return <button type="submit" onClick={this.handleSubmit} className="btn btn-default">Submit</button>
+    }
+
+    displaySaveButton() {
+        return <button type="button" onClick={this.saveEdit} className="btn btn-default">Save</button>
+    }
+
     render() {
         
         return(
             <main>
-                <form onSubmit={this.handleSubmit}>
-
+                <form>
                     <div className='form-group'>
                         <label htmlFor="premiseId">ID</label>
                         <input 
@@ -191,7 +240,7 @@ class PremiseForm extends React.Component {
                             defaultValue = {this.state.postCode} 
                         />
                     </div>
-                    <button type="submit" className="btn btn-default">Submit</button>
+                    { this.isNewPremise === 1 ? this.displaySubmitButton() : this.displaySaveButton() }            
                 </form>
             </main>
         );

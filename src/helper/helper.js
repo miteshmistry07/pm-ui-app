@@ -6,11 +6,13 @@ export const utility = {
     json
 }
 
-function checkStatus(response) {        
+function checkStatus(response) {    
+    
     if (!response.ok) {
         //false
         if (response.status !== 401 && response.status !== 400) {
-                throw new Error(response.status + " " + response.statusText);  
+            throw new Error(response.status + " " + response.statusText);
+            
         }
     }
     return  Promise.resolve(response);
