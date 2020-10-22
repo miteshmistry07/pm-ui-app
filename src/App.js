@@ -7,7 +7,7 @@ import LoginForm from './components/login/LoginForm';
 import Home from './components/Home';
 import Brand from './components/Brand';
 
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route,} from 'react-router-dom';
 
 function App() {
   return (
@@ -27,5 +27,7 @@ function App() {
     
   );
 }
+
+// better one: https://www.sitepoint.com/react-router-complete-guide/
 // decent vid for routing https://www.youtube.com/watch?v=Law7wfdg_ls 
 export default App;

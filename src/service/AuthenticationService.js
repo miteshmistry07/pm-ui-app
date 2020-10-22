@@ -2,6 +2,7 @@
 import { BehaviorSubject } from 'rxjs'; //behavoiur sub rather than obserable as use intital value
 import jws from 'jsonwebtoken'; //decode token
 import * as helper from '../helper/helper';
+
 /*
     useful resources:
     https://www.alibabacloud.com/blog/how-to-implement-authentication-in-reactjs-using-jwt_595820
@@ -15,6 +16,12 @@ import * as helper from '../helper/helper';
         * do something without timeout for token??? client side and server side? better error message?
 
         * maybe redirect logout to Home page after clearing sessions?
+
+
+    use these links to protect routes:    
+    https://medium.com/@leonardobrunolima/react-tips-how-to-protect-routes-for-unauthorized-access-with-react-router-v4-73c0d451e0a2
+
+    https://medium.com/javascript-in-plain-english/how-to-set-up-protected-routes-in-your-react-application-a3254deda380
 */
 const currentUserSubject = new BehaviorSubject(sessionStorage.getItem("username"));
 
@@ -23,15 +30,14 @@ export const authenticationService = {
     login,
     logout,
     getToken,
-    currentUser: currentUserSubject.asObservable(),
+    currentUser: currentUserSubject.asObservable(), 
     get currentUserValue() {
         //getter
         return currentUserSubject.value 
-    } 
+    }
 };
 
 function login(state) {
-
     //state from login page which contains username and password
     let apiPath = '/api/login';
     const requestOptions = {
@@ -60,16 +66,14 @@ function login(state) {
                 for(let i=0; i < data.errors.length; i++) {
                         validationErrors += " " + data.errors[i]  + ".";
                 }
-                alert("form errors " + validationErrors);    
+                alert("form errors " + validationErrors);  
             }
             else {
                 //need to store the token in local storage/decode jwt payload
                 console.log('Success');
                 console.log(data);
                 
-                processToken(data);
-                
-                //new LoginStatus(true);                  
+                processToken(data);               
             }
         })
         .catch((error)=> {
@@ -77,7 +81,6 @@ function login(state) {
             console.log(error);
             alert("An error has occured. " + error.message);
         });
-
 } //end function login
 
 function processToken(response) {
@@ -112,9 +115,9 @@ function getToken() {
 
 function logout() {
     //clear session storage for user to logout
-    if (window.confirm("Are you sure you want to logout?")) {
-        sessionStorage.clear();
-        currentUserSubject.next(null);
-    }
+    sessionStorage.clear();
+    currentUserSubject.next(null);
 }
+
+
 

@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import login from '../../assets/login.png';
 import {authenticationService } from '../../service/AuthenticationService';
+import Logout from './Logout';
 
 class LoginStatus extends React.Component {
 
@@ -11,11 +12,12 @@ class LoginStatus extends React.Component {
             isLoggedIn: false,
             username: ""
         }
+        this.usernameSub = null;
     }
 
     componentDidMount() {
 
-        authenticationService.currentUser.subscribe((data) => {
+        this.usernameSub = authenticationService.currentUser.subscribe((data) => {
             //console.log(this.state);
             //if we have username then update state if not clear state which will trigger re-render
             if (data) {
@@ -34,10 +36,9 @@ class LoginStatus extends React.Component {
         });
     } 
 
-    logOut() {
-        authenticationService.logout();
+    componentWillUnmount() {
+        this.usernameSub.unsubscribe();
     }
-
 
     render() {
         
@@ -53,7 +54,7 @@ class LoginStatus extends React.Component {
                         {this.state.username}
                     </button>
                     <div className="dropdown-menu dropdown-menu-right">
-                        <button className="dropdown-item" type="button" onClick={this.logOut}>Logout</button>
+                        <Logout/>
                     </div>
                 </div>
             );
