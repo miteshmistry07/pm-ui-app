@@ -34,6 +34,12 @@ export const authenticationService = {
     get currentUserValue() {
         //getter
         return currentUserSubject.value 
+    },
+    isAuthenticated() {
+        if (sessionStorage.getItem("isLoggedIn")) {
+            return true;
+        }
+        return false;
     }
 };
 

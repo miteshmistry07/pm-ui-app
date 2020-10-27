@@ -71,6 +71,7 @@ class LoginForm extends React.Component {
                         name="password"
                         placeholder="Password" 
                         onChange={this.handleOnChange}
+                        autoComplete="on"
                         required
                     />
                     <button type="submit" className="btn btn-lg btn-primary btn-block">Login</button>

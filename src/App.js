@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Brand from './components/Brand';
 
 import { BrowserRouter as Router, Switch, Route,} from 'react-router-dom';
+import ProtectedRoutes from './components/ProtectedRoutes';
 
 function App() {
   return (
@@ -17,17 +18,18 @@ function App() {
           <Navigation/> 
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/addPremise" component={PremiseForm} />
-            <Route path="/listPremises" component={ListAllPremises} />
-            <Route path="/viewPremise/:premiseId" component={PremiseForm} />
+            <ProtectedRoutes path="/addPremise" component={PremiseForm} />
+            <ProtectedRoutes path="/listPremises" component={ListAllPremises}/>
+            <ProtectedRoutes path="/viewPremise/:premiseId" component={PremiseForm}/>
             <Route path="/login"  component={LoginForm} />
+            <Route path="*" component={()=> "404 not found"} />          
           </Switch>
         </Router>
       </div>
     
   );
 }
-
+//https://reactrouter.com/web/guides/primary-components
 // better one: https://www.sitepoint.com/react-router-complete-guide/
 // decent vid for routing https://www.youtube.com/watch?v=Law7wfdg_ls 
 export default App;
